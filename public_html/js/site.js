@@ -13,4 +13,20 @@ function countdownTimer () {
 
 $(document).ready(function() {
     setInterval(countdownTimer, 1000);
+    
+    if(window.location.pathname.toLowerCase() == '/savethedate') {
+        var videoHtml = $('#videoFuturo').html();
+        var modalHtml = '<div id="modalSaveTheDate" class="modal fade" tabindex="-1" role="dialog">'+
+        '<div class="modal-dialog" role="document">'+
+          '<div class="modal-content">'+
+            '<div class="modal-header">'+
+              '<div class="text-center">Save The Date - 11.11.2017</div>'+
+            '</div>' +
+            '<div class="modal-body">'+ videoHtml +
+          '</div></div></div></div>';
+
+        $('body').append(modalHtml);
+        $('#modalSaveTheDate').modal();
+    }    
 });
+
