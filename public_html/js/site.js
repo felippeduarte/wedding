@@ -17,10 +17,10 @@ $(document).ready(function() {
     if(window.location.pathname.toLowerCase() == '/savethedate') {
         var videoHtml = $('#videoFuturo').html();
         var modalHtml = '<div id="modalSaveTheDate" class="modal fade" tabindex="-1" role="dialog">'+
-        '<div class="modal-dialog" role="document">'+
+        '<div class="modal-dialog modal-lg" role="document">'+
           '<div class="modal-content">'+
             '<div class="modal-header">'+
-              '<div class="text-center">Save The Date - 11.11.2017</div>'+
+              '<div class="text-center">Reserve Esta Data - 11.11.2017</div>'+
             '</div>' +
             '<div class="modal-body">'+ videoHtml +
           '</div></div></div></div>';
