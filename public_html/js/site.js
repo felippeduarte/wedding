@@ -28,5 +28,35 @@ $(document).ready(function() {
         $('body').append(modalHtml);
         $('#modalSaveTheDate').modal();
     }    
+    
+    if(window.location.pathname.toLowerCase() == '/thebests') {
+        var modalHtml = '<div id="modalPadrinho" class="modal fade" tabindex="-1" role="dialog">'+
+        '<div class="modal-dialog modal-lg" role="document">'+
+          '<div class="modal-content">'+
+            '<div class="modal-header">'+
+              '<div id="padrinho-content-title" class="text-center"></div>'+
+            '</div>' +
+            '<div id="padrinho-content-text" class="modal-body"></div>'+
+        '</div></div></div>';
+
+        $('body').append(modalHtml);
+        
+        $('.padrinhos-photos a').click(function() {
+           var padrinho = $(this).data('padrinho-name');
+           $('#padrinho-content-title').html(padrinho);
+           
+           $.ajax({
+               url: 'padrinhos-text/'+padrinho+'.html',
+               success: function(text) {
+                   $('#padrinho-content-text').html(text);
+               }
+           });
+        });
+        
+        function loadPadrinhoModal(padrinho) {
+
+            $('#modalPadrinho').modal();
+        }
+    }
 });
 

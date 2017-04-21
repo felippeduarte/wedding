@@ -8,6 +8,21 @@
     src: url("../fonts/CookieMonster.ttf") format("truetype");
 }
 
+@font-face {
+    font-family: "f_saint_tropez";
+    src: url("../fonts/f_saint_tropez.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Simple_Cream";
+    src: url("../fonts/Simple_Cream.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "The_Lost_Paintings";
+    src: url("../fonts/The_Lost_Paintings.ttf") format("truetype");
+}
+
 p.logo {
     margin: 10px;
 }
@@ -118,4 +133,43 @@ html, body {
 
 .footer p {
     margin-top: 8px;
+}
+
+/* pagina padrinhos */
+.padrinhos-text {
+    font-family: "Simple_Cream";
+    font-size: 2.5em;
+    margin-top: 30px;
+    text-align: center;
+    padding-bottom: 60px;
+}
+
+.padrinhos-photos {
+    padding-bottom: 40px;
+}
+
+.padrinhos-photo {
+    padding-top: 10px;
+}
+
+.padrinhos-caption {
+    font-family: "Simple_Cream";
+    font-weight: bold;
+    font-size: 2.7em;
+}
+
+span.st {
+    font-family: 'f_saint_tropez';
+    font-size: 1.3em;
+    margin: 0px 0.2em;
+}
+
+span.sc {
+    font-family: "Simple_Cream";
+}
+
+span.lp {
+    font-family: "The_Lost_Paintings";
+    font-size: 1.2em;
+    margin: 0px 0.15em;
 }
