@@ -29,7 +29,7 @@ $(document).ready(function() {
         $('#modalSaveTheDate').modal();
     }    
     
-    if(window.location.pathname.toLowerCase() == '/thebests') {
+    if(window.location.pathname.toLowerCase() == '/thebests.html') {
         var modalHtml = '<div id="modalPadrinho" class="modal fade" tabindex="-1" role="dialog">'+
         '<div class="modal-dialog modal-lg" role="document">'+
           '<div class="modal-content">'+
@@ -42,21 +42,18 @@ $(document).ready(function() {
         $('body').append(modalHtml);
         
         $('.padrinhos-photos a').click(function() {
-           var padrinho = $(this).data('padrinho-name');
-           $('#padrinho-content-title').html(padrinho);
-           
-           $.ajax({
-               url: 'padrinhos-text/'+padrinho+'.html',
-               success: function(text) {
-                   $('#padrinho-content-text').html(text);
-               }
-           });
-        });
-        
-        function loadPadrinhoModal(padrinho) {
+            console.log('aqui');
+            var padrinho = $(this).data('padrinho-name');
+            $('#padrinho-content-title').html(padrinho);
 
-            $('#modalPadrinho').modal();
-        }
+            $.ajax({
+                url: 'padrinhos-text/'+padrinho+'.html',
+                success: function(text) {
+                    $('#padrinho-content-text').html(text);
+                    $('#modalPadrinho').modal();
+                }
+            });
+        });
     }
 });
 

@@ -158,8 +158,20 @@ html, body {
     font-size: 2.7em;
 }
 
+#padrinho-content-title {
+    font-family: "Marmelatta (Jam)_demo";
+    font-weight: bold;
+    font-size: 3em;
+}
+
+#padrinho-content-text {
+    font-family: "Simple_Cream";
+    font-size: 2em;
+    text-align: center;
+}
+
 span.st {
-    font-family: 'f_saint_tropez';
+    font-family: "f_saint_tropez";
     font-size: 1.3em;
     margin: 0px 0.2em;
 }
