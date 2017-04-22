@@ -38,6 +38,9 @@ $(document).ready(function() {
               '<div id="padrinho-content-title" class="text-center"></div>'+
             '</div>' +
             '<div id="padrinho-content-text" class="modal-body"></div>'+
+            '<div class="modal-footer">'+
+              '<button type="button" class="btn btn-default center-block" data-dismiss="modal">Fechar</button>'+
+            '</div>'+
         '</div></div></div>';
 
         $('body').append(modalHtml);
