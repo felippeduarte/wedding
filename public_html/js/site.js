@@ -34,6 +34,7 @@ $(document).ready(function() {
         '<div class="modal-dialog modal-lg" role="document">'+
           '<div class="modal-content">'+
             '<div class="modal-header">'+
+              '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+
               '<div id="padrinho-content-title" class="text-center"></div>'+
             '</div>' +
             '<div id="padrinho-content-text" class="modal-body"></div>'+
