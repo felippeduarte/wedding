@@ -42,7 +42,6 @@ $(document).ready(function() {
         $('body').append(modalHtml);
         
         $('.padrinhos-photos a').click(function() {
-            console.log('aqui');
             var padrinho = $(this).data('padrinho-name');
             $('#padrinho-content-title').html(padrinho);
 
