@@ -153,6 +153,11 @@ html, body {
     min-height: 213px;
 }
 
+.padrinhos-photo > div {
+    position: absolute;
+    bottom: 0;
+}
+
 .padrinhos-caption {
     font-family: "Simple_Cream";
     font-weight: bold;
