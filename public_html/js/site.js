@@ -39,7 +39,7 @@ $(document).ready(function() {
             '</div>' +
             '<div class="modal-body">'+
                 '<div id="padrinho-content-text"></div>' +
-                '<div class="container">'+
+                '<div class="row">'+
                     '<div class="col-xs-6"><button type="button" id="btn_padrinho_aceitou" class="btn btn-success btn-block center-block"><i class="glyphicon glyphicon-thumbs-up"></i> Sim</button></div>'+
                     '<div class="col-xs-6"><button type="button" class="btn btn-danger btn-block center-block" data-dismiss="modal"><i class="glyphicon glyphicon-thumbs-down"></i> Não</button></div>'+
                 '</div>' +

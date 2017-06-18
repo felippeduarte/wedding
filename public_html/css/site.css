@@ -150,6 +150,7 @@ html, body {
 
 .padrinhos-photo {
     padding-top: 10px;
+    min-height: 213px;
 }
 
 .padrinhos-caption {
