@@ -38,13 +38,10 @@ $(document).ready(function() {
               '<div id="padrinho-content-title" class="text-center"></div>'+
             '</div>' +
             '<div class="modal-body">'+
-                '<div id="padrinho-content-text"></div>' +
-                '<div class="row">'+
+                '<div id="padrinho-content-text"></div><br/>' +
+                '<div class="row" id="padrinho-buttons">'+
                     '<div class="col-xs-6"><button type="button" id="btn_padrinho_aceitou" class="btn btn-success btn-block center-block"><i class="glyphicon glyphicon-thumbs-up"></i> Sim</button></div>'+
                     '<div class="col-xs-6"><button type="button" class="btn btn-danger btn-block center-block" data-dismiss="modal"><i class="glyphicon glyphicon-thumbs-down"></i> Não</button></div>'+
-                '</div>' +
-                '<div id="padrinho_aceitou" style="display:none">' +
-                    'Texto padrinho aceitou' +
                 '</div>' +
             '</div>'+
             '<div class="modal-footer">'+
@@ -55,18 +52,27 @@ $(document).ready(function() {
         $('body').append(modalHtml);
 
         $('#btn_padrinho_aceitou').click(function() {
-            $('#padrinho_aceitou').show();
+             $.ajax({
+                url: 'padrinhos-text/sim.html',
+                success: function(text) {
+                    $('#modalPadrinho').scrollTop(0);
+                    $('#padrinho-content-title').html('Uhull!!!!');
+                    $('#padrinho-content-text').html(text);
+                    $('#padrinho-buttons').hide();
+                }
+            });
         });
         
         $('.padrinhos-photos a').click(function() {
             var padrinho = $(this).data('padrinho-name');
             $('#padrinho-content-title').html(padrinho.replace(/\_/g,' '));
+            $('#padrinho_aceitou').html('');
 
             $.ajax({
                 url: 'padrinhos-text/'+padrinho+'.html',
                 success: function(text) {
                     $('#padrinho-content-text').html(text);
-                    $('#padrinho_aceitou').hide();
+                    $('#padrinho-buttons').show();
                     $('#modalPadrinho').modal();
                 }
             });
