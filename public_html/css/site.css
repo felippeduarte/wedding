@@ -150,7 +150,7 @@ html, body {
 
 .padrinhos-photo {
     padding-top: 10px;
-    min-height: 213px;
+    height: 171px;
 }
 
 .padrinhos-photo > div {
@@ -158,10 +158,19 @@ html, body {
     bottom: 0;
 }
 
+.padrinhos-photo .img-responsive {
+    max-height: 100px;
+}
+
+.padrinho-casal-photo {
+    padding-left: 0;
+    padding-right: 0;
+}
+
 .padrinhos-caption {
     font-family: "Simple_Cream";
     font-weight: bold;
-    font-size: 2.7em;
+    font-size: 1.8em;
 }
 
 #padrinho-content-title {
@@ -190,4 +199,18 @@ span.lp {
     font-family: "The_Lost_Paintings";
     font-size: 1.2em;
     margin: 0px 0.15em;
+}
+
+@media (min-width:460px) {
+    .padrinhos-caption {
+        font-size: 2.7em;
+    }
+
+    .padrinhos-photo {
+        height: 213px;
+    }
+
+    .padrinhos-photo .img-responsive {
+        max-height: inherit;
+    }
 }
