@@ -41,7 +41,7 @@ $(document).ready(function() {
                 '<div id="padrinho-content-text"></div><br/>' +
                 '<div class="row" id="padrinho-buttons">'+
                     '<div class="col-xs-6"><button type="button" id="btn_padrinho_aceitou" class="btn btn-success btn-block center-block"><i class="glyphicon glyphicon-thumbs-up"></i> Sim</button></div>'+
-                    '<div class="col-xs-6"><button type="button" class="btn btn-danger btn-block center-block" data-dismiss="modal"><i class="glyphicon glyphicon-thumbs-down"></i> Não</button></div>'+
+                    '<div class="col-xs-6" id="padrinho-button-nao"><button type="button" id="btn_padrinho_nao_aceitou" class="btn btn-danger btn-block center-block"><i class="glyphicon glyphicon-thumbs-down"></i> Não</button></div>'+
                 '</div>' +
             '</div>'+
             '<div class="modal-footer">'+
@@ -51,8 +51,9 @@ $(document).ready(function() {
 
         $('body').append(modalHtml);
 
-        $('#btn_padrinho_aceitou').click(function() {
-             $.ajax({
+        var padrinho_aceitou = function() {
+            reset_btn_padrinho_nao_aceitou();
+            $.ajax({
                 url: 'padrinhos-text/sim.html',
                 success: function(text) {
                     $('#modalPadrinho').scrollTop(0);
@@ -61,8 +62,40 @@ $(document).ready(function() {
                     $('#padrinho-buttons').hide();
                 }
             });
-        });
-        
+        }
+
+        var padrinho_nao_aceitou = function() {
+            $.ajax({
+                url: 'padrinhos-text/nao.html',
+                success: function(text) {
+                    $('#modalPadrinho').scrollTop(0);
+                    $('#padrinho-content-title').html('Ops...');
+                    $('#padrinho-content-text').html(text);
+
+                    $('#btn_padrinho_nao_aceitou').off().on('mouseover click', function() {
+                        var maxLeft = $('#modalPadrinho .modal-body').width();
+                        var maxTop = $('#modalPadrinho .modal-body').height();
+
+                        $(this)
+                            .detach()
+                            .appendTo('#modalPadrinho .modal-body')
+                            .removeClass('btn-block')
+                            .css('position','absolute')
+                            .css('top', (Math.floor(Math.random() * maxTop) + 1) + 'px')
+                            .css('left', (Math.floor(Math.random() * maxLeft) + 1) + 'px');
+                    });
+                }
+            });
+        }
+
+        function reset_btn_padrinho_nao_aceitou() {
+            $('#btn_padrinho_nao_aceitou')
+                .detach()
+                .appendTo('#padrinho-button-nao')
+                .addClass('btn-block')
+                .css('position','');
+        }
+
         $('.padrinhos-photos a').click(function() {
             var padrinho = $(this).data('padrinho-name');
             $('#padrinho-content-title').html(padrinho.replace(/\_/g,' '));
@@ -71,7 +104,14 @@ $(document).ready(function() {
             $.ajax({
                 url: 'padrinhos-text/'+padrinho+'.html',
                 success: function(text) {
+
+                    $('#btn_padrinho_aceitou').off().click(padrinho_aceitou);
+                    $('#btn_padrinho_nao_aceitou').off().click(padrinho_nao_aceitou);
+                    
                     $('#padrinho-content-text').html(text);
+
+                    reset_btn_padrinho_nao_aceitou();
+
                     $('#padrinho-buttons').show();
                     $('#modalPadrinho').modal();
                 }

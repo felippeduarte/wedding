@@ -185,6 +185,13 @@ html, body {
     text-align: center;
 }
 
+.padrinhos-inside-photo {
+    border: 3px solid white;
+    outline: 1px solid black;
+    margin: 8px auto 18px auto;
+    display: block;
+}
+
 span.st {
     font-family: "f_saint_tropez";
     font-size: 1.3em;
