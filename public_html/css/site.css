@@ -221,3 +221,15 @@ span.lp {
         max-height: inherit;
     }
 }
+
+#wrap .navbar {
+    margin-bottom: 0px;
+}
+
+#wrap .navbar .navbar-brand {
+    padding-top: 10px;
+}
+
+#wrap .navbar .navbar-brand img {
+    display: inline;
+}
