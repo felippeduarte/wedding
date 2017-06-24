@@ -14,8 +14,8 @@ function countdownTimer () {
 
 function savePadrinhos(opcao, padrinho) {
     const itemsRef = firebase.database().ref('padrinhos_' + opcao);
-    const item = {padrinho: padrinho};
-    itemsRef.push(padrinho);
+    const item = {padrinho: padrinho, hora: moment().format('DD/MM/YYYY HH:mm:ss')};
+    itemsRef.push(item);
 }
 
 function getPadrinhosSim() {
@@ -24,7 +24,7 @@ function getPadrinhosSim() {
         var padrinhos = [];
         for (var key in obj) {
             if (Object.prototype.hasOwnProperty.call(obj, key)) {
-                padrinhos.push(obj[key]);
+                padrinhos.push(obj[key].padrinho);
             }
         }
 
