@@ -1,4 +1,5 @@
 var eventDate = moment('2017-11-11T17:30:00');
+firebase.initializeApp({apiKey: "AIzaSyAqLwDb160iEiSA67Jom8qRIoX2eiJ2SEg",authDomain: "dani-e-felippe.firebaseapp.com",databaseURL: "https://dani-e-felippe.firebaseio.com",projectId: "dani-e-felippe",storageBucket: "dani-e-felippe.appspot.com",messagingSenderId: "412465578202"});
 
 function countdownTimer () {
     var now = moment();
@@ -9,6 +10,112 @@ function countdownTimer () {
     $('#presente_horas').html(diff.hours);
     $('#presente_minutos').html(diff.minutes);
     $('#presente_segundos').html(diff.seconds);
+}
+
+function savePadrinhos(opcao, padrinho) {
+    const itemsRef = firebase.database().ref('padrinhos_' + opcao);
+    const item = {padrinho: padrinho};
+    itemsRef.push(padrinho);
+}
+
+function getPadrinhosSim() {
+    const itemsRef = firebase.database().ref('padrinhos_sim').once('value').then(function(snapshot) {
+        var obj = snapshot.val();
+        var padrinhos = [];
+        for (var key in obj) {
+            if (Object.prototype.hasOwnProperty.call(obj, key)) {
+                padrinhos.push(obj[key]);
+            }
+        }
+
+        var anomDivContent = '<img class="img-responsive center-block" src="img/thebests/circle_john_doe.png" alt="???" />'+
+                             '<span class="padrinhos-caption">???</span>';
+
+        var padrinhosDiv = $('.padrinhos-photo');
+
+        for (var key in padrinhosDiv) {
+            if (Object.prototype.hasOwnProperty.call(padrinhosDiv, key)) {
+                var div = padrinhosDiv[key];
+
+                if(padrinhos.indexOf($(div).find('a').data('padrinho-name')) == -1) {
+                    $(div).html(anomDivContent);
+                }
+            }
+        }
+
+        $('.padrinhos-photos').removeClass('hidden');
+    });
+}
+
+function padrinhosModal(elem, binds) {
+    var padrinho = elem.data('padrinho-name');
+    $('#padrinho-content-title').html(padrinho.replace(/\_/g,' '));
+    $('#padrinho_aceitou').html('');
+
+    $.ajax({
+        url: 'padrinhos-text/'+padrinho+'.html',
+        success: function(text) {
+            var frasePergunta = '<div class="thebests"><p>Antes de fazermos a <span class="st">pergunta</span>, temos uma <span class="lp">historinha</span> para contar...</p></div>';
+            $('#padrinho-content-text').html(frasePergunta + text);
+
+            if(binds) {
+                $('#btn_padrinho_aceitou').off().click(function(){padrinho_aceitou(padrinho);});
+                $('#btn_padrinho_nao_aceitou').off().click(function(){padrinho_nao_aceitou(padrinho);});
+
+                reset_btn_padrinho_nao_aceitou();
+                $('#padrinho-buttons').show();
+            }
+
+            $('#modalPadrinho').modal();
+        }
+    });
+}
+
+function padrinho_aceitou(padrinho) {
+    reset_btn_padrinho_nao_aceitou();
+    savePadrinhos('sim',padrinho);
+    $.ajax({
+        url: 'padrinhos-text/sim.html',
+        success: function(text) {
+            $('#modalPadrinho').scrollTop(0);
+            $('#padrinho-content-title').html('Uhull!!!!');
+            $('#padrinho-content-text').html(text);
+            $('#padrinho-buttons').hide();
+        }
+    });
+}
+
+function padrinho_nao_aceitou(padrinho) {
+    savePadrinhos('nao',padrinho);
+    $.ajax({
+        url: 'padrinhos-text/nao.html',
+        success: function(text) {
+            $('#modalPadrinho').scrollTop(0);
+            $('#padrinho-content-title').html('Ops...');
+            $('#padrinho-content-text').html(text);
+
+            $('#btn_padrinho_nao_aceitou').off().on('mouseover click', function() {
+                var maxLeft = $('#modalPadrinho .modal-body').width();
+                var maxTop = $('#modalPadrinho .modal-body').height();
+
+                $(this)
+                    .detach()
+                    .appendTo('#modalPadrinho .modal-body')
+                    .removeClass('btn-block')
+                    .css('position','absolute')
+                    .css('top', (Math.floor(Math.random() * maxTop) + 1) + 'px')
+                    .css('left', (Math.floor(Math.random() * maxLeft) + 1) + 'px');
+            });
+        }
+    });
+}
+
+function reset_btn_padrinho_nao_aceitou() {
+    $('#btn_padrinho_nao_aceitou')
+        .detach()
+        .appendTo('#padrinho-button-nao')
+        .addClass('btn-block')
+        .css('position','');
 }
 
 $(document).ready(function() {
@@ -27,7 +134,30 @@ $(document).ready(function() {
 
         $('body').append(modalHtml);
         $('#modalSaveTheDate').modal();
-    }    
+    }
+
+    if(window.location.pathname.toLowerCase() == '/osescolhidos.html') {
+        $("<style type='text/css'> .thebests{ display:none;}</style>").appendTo("head");
+        var aceitaram = getPadrinhosSim();
+        var modalHtml = '<div id="modalPadrinho" class="modal fade" tabindex="-1" role="dialog">'+
+        '<div class="modal-dialog modal-lg" role="document">'+
+          '<div class="modal-content">'+
+            '<div class="modal-header">'+
+              '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+
+              '<div id="padrinho-content-title" class="text-center"></div>'+
+            '</div>' +
+            '<div class="modal-body">'+
+                '<div id="padrinho-content-text"></div>'+
+            '</div>'+
+            '<div class="modal-footer">'+
+              '<button type="button" class="btn btn-default center-block" data-dismiss="modal">Fechar</button>'+
+            '</div>'+
+        '</div></div></div>';
+
+        $('body').append(modalHtml);
+
+        $('.padrinhos-photos a').click(function() {padrinhosModal($(this), false);});
+    }
     
     if(window.location.pathname.toLowerCase() == '/thebests.html') {
         var modalHtml = '<div id="modalPadrinho" class="modal fade" tabindex="-1" role="dialog">'+
@@ -51,72 +181,7 @@ $(document).ready(function() {
 
         $('body').append(modalHtml);
 
-        var padrinho_aceitou = function() {
-            reset_btn_padrinho_nao_aceitou();
-            $.ajax({
-                url: 'padrinhos-text/sim.html',
-                success: function(text) {
-                    $('#modalPadrinho').scrollTop(0);
-                    $('#padrinho-content-title').html('Uhull!!!!');
-                    $('#padrinho-content-text').html(text);
-                    $('#padrinho-buttons').hide();
-                }
-            });
-        }
-
-        var padrinho_nao_aceitou = function() {
-            $.ajax({
-                url: 'padrinhos-text/nao.html',
-                success: function(text) {
-                    $('#modalPadrinho').scrollTop(0);
-                    $('#padrinho-content-title').html('Ops...');
-                    $('#padrinho-content-text').html(text);
-
-                    $('#btn_padrinho_nao_aceitou').off().on('mouseover click', function() {
-                        var maxLeft = $('#modalPadrinho .modal-body').width();
-                        var maxTop = $('#modalPadrinho .modal-body').height();
-
-                        $(this)
-                            .detach()
-                            .appendTo('#modalPadrinho .modal-body')
-                            .removeClass('btn-block')
-                            .css('position','absolute')
-                            .css('top', (Math.floor(Math.random() * maxTop) + 1) + 'px')
-                            .css('left', (Math.floor(Math.random() * maxLeft) + 1) + 'px');
-                    });
-                }
-            });
-        }
-
-        function reset_btn_padrinho_nao_aceitou() {
-            $('#btn_padrinho_nao_aceitou')
-                .detach()
-                .appendTo('#padrinho-button-nao')
-                .addClass('btn-block')
-                .css('position','');
-        }
-
-        $('.padrinhos-photos a').click(function() {
-            var padrinho = $(this).data('padrinho-name');
-            $('#padrinho-content-title').html(padrinho.replace(/\_/g,' '));
-            $('#padrinho_aceitou').html('');
-
-            $.ajax({
-                url: 'padrinhos-text/'+padrinho+'.html',
-                success: function(text) {
-
-                    $('#btn_padrinho_aceitou').off().click(padrinho_aceitou);
-                    $('#btn_padrinho_nao_aceitou').off().click(padrinho_nao_aceitou);
-                    
-                    $('#padrinho-content-text').html(text);
-
-                    reset_btn_padrinho_nao_aceitou();
-
-                    $('#padrinho-buttons').show();
-                    $('#modalPadrinho').modal();
-                }
-            });
-        });
+        $('.padrinhos-photos a').click(function() {padrinhosModal($(this), true);});
     }
 });
 

@@ -27,7 +27,7 @@ p.logo {
     margin: 10px;
 }
 
-p.logo > .img-responsive {
+p.logo > a > .img-responsive {
     margin: 0 auto;
 }
 
