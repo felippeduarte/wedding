@@ -36,6 +36,8 @@
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
                             <li><a href="osescolhidos.html">Os Escolhidos</a></li>
+                            <li class="hidden-xs"><a>|</a></li>
+                            <li><a href="/presentes">Lista de Presentes</a></li>
                         </ul>
                     </div>
                 </div>
