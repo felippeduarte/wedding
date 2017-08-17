@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Sale;
+use App\Product;
 use Illuminate\Http\Request;
+use PagSeguro;
 
 class SaleController extends Controller
 {
@@ -14,7 +16,11 @@ class SaleController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::all();
+
+        return view('sales.index', [
+            'products' => $products,
+        ]);
     }
 
     /**
@@ -22,9 +28,19 @@ class SaleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $product = Product::findOrFail($request->input('id'));
+        $session_id = $request->input('sessionId');
+        $hash = $request->input('hash');
+        $tipo = $request->input('tipo');
+
+        return view('sales.create', [
+            'product' => $product,
+            'session_id' => $session_id,
+            'hash' => $hash,
+            'tipo' => $tipo,
+        ]);
     }
 
     /**
@@ -35,51 +51,63 @@ class SaleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $product = Product::findOrFail($request->input('product_id'));
+
+        //$sale = Sale::create([]);
+        //$ref = $sale->id;
+        $ref = 'REF'.rand();
+
+        $pagseguro = PagSeguro::setReference($ref)
+            ->setSenderInfo([
+                'senderName' => $request->input('nome'),
+                'senderPhone' => $request->input('telefone'),
+                'senderEmail' => $request->input('email'),
+                'senderHash' => $request->input('hash'),
+                'senderCPF' => $request->input('cpf'),
+            ])
+            ->setShippingAddress([
+                'shippingAddressStreet' => 'Rua Souza Dutra',
+                'shippingAddressNumber' => '353',
+                'shippingAddressDistrict' => 'Estreito',
+                'shippingAddressPostalCode' => '88070-605',
+                'shippingAddressCity' => 'Florianópolis',
+                'shippingAddressState' => 'SC',
+            ])
+            ->setItems([
+                [
+                    'itemId' => $product->id,
+                    'itemDescription' => $product->name,
+                    'itemAmount' => 150,
+                    'itemQuantity' => '1',
+                ],
+            ])
+            ->setShippingInfo([
+                'shippingType' => "3",
+                'shippingCost' => "0.00",
+            ])
+            ->send([
+                'paymentMethod' => 'boleto'
+            ]);
+
+        //dd($pagseguro);
+
+        return view('sales.store', [
+            'paymentLink' => $pagseguro->paymentLink,
+        ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Sale  $sale
+     * @param  int  $id product_id
      * @return \Illuminate\Http\Response
      */
-    public function show(Sale $sale)
+    public function show($id)
     {
-        //
-    }
+        $product = Product::findOrFail($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Sale  $sale
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Sale $sale)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Sale  $sale
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Sale $sale)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Sale  $sale
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Sale $sale)
-    {
-        //
+        return view('sales.show', [
+            'product' => $product,
+        ]);
     }
 }

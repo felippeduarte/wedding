@@ -18,4 +18,4 @@ $index = function () {
 Route::get('/', $index);
 Route::get('/index.html', $index);
 
-Route::resource('presentes', 'ProductController');
+Route::resource('presentes', 'SaleController', ['only' => ['index','show','create','store']]);
