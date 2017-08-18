@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Sale;
 use App\Product;
 use Illuminate\Http\Request;
+use App\Enums\EnumTipoPagamento;
 use PagSeguro;
 
 class SaleController extends Controller
@@ -52,6 +53,7 @@ class SaleController extends Controller
     public function store(Request $request)
     {
         $product = Product::findOrFail($request->input('product_id'));
+        $tipo = $request->input('tipo');
 
         //$sale = Sale::create([]);
         //$ref = $sale->id;
@@ -77,19 +79,40 @@ class SaleController extends Controller
                 [
                     'itemId' => $product->id,
                     'itemDescription' => $product->name,
-                    'itemAmount' => 150,
+                    'itemAmount' => $product->price,
                     'itemQuantity' => '1',
                 ],
             ])
             ->setShippingInfo([
                 'shippingType' => "3",
                 'shippingCost' => "0.00",
-            ])
-            ->send([
-                'paymentMethod' => 'boleto'
             ]);
 
-        //dd($pagseguro);
+        if($tipo == EnumTipoPagamento::BOLETO) {
+            $pagseguro = $pagseguro->send([
+                'paymentMethod' => 'boleto'
+            ]);
+        } elseif($tipo == EnumTipoPagamento::CREDIT_CARD) {
+            $pagseguro = $pagseguro->setCreditCardHolder([
+                    'creditCardHolderBirthDate' =>  $request->input('dataNascimento'),
+                ])
+                ->setBillingAddress([
+                    'billingAddressStreet' => $request->input('billingAddressStreet'),
+                    'billingAddressNumber' => $request->input('billingAddressNumber'),
+                    'billingAddressComplement' => $request->input('billingAddressComplement'),
+                    'billingAddressDistrict' => $request->input('billingAddressDistrict'),
+                    'billingAddressPostalCode' => $request->input('billingAddressPostalCode'),
+                    'billingAddressCity' => $request->input('billingAddressCity'),
+                    'billingAddressState' => $request->input('billingAddressState'),
+                ])
+                ->send([
+                    'paymentMethod' => 'creditCard',
+                    'creditCardToken' => $request->input('tokenCartaoCredito'),
+                    'noInterestInstallmentQuantity' => $request->input('parcelas'),
+                    'installmentQuantity' => $request->input('parcelas'),
+                    'installmentValue' => $product->price/$request->input('parcelas'),
+                ]);
+        }
 
         return view('sales.store', [
             'paymentLink' => $pagseguro->paymentLink,

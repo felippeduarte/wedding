@@ -6,7 +6,6 @@
             <div class="col-xs-12 col-sm-6">
                 <img src="/img/products/{{ $product->image }}">
                 <label>{{ $product->name }}</label>
-                <span>{{ $product->description }}</span>
                 <a href="/presentes/{{$product->id}}" class="btn btn-success"><i class="fa fa-gift"></i> Presentear</a>
             </div>
         @endforeach
