@@ -34,6 +34,6 @@ class InsertProducts extends Migration
      */
     public function down()
     {
-        \DB::table('products')->truncate();
+        \DB::table('products')->delete();
     }
 }

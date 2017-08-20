@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Sale;
+use App\Person;
 use App\Product;
 use Illuminate\Http\Request;
 use App\Enums\EnumTipoPagamento;
@@ -55,9 +56,25 @@ class SaleController extends Controller
         $product = Product::findOrFail($request->input('product_id'));
         $tipo = $request->input('tipo');
 
-        //$sale = Sale::create([]);
-        //$ref = $sale->id;
-        $ref = 'REF'.rand();
+        $person = Person::create([
+            'name' => $request->input('nome'),
+            'phone' => $request->input('telefone'),
+            'email' => $request->input('email'),
+            'cpf' => $request->input('cpf'),
+        ]);
+        $sale = Sale::create([
+            'product_id' => $product->id,
+            'person_id' => $person->id,
+            'price' => $product->price,
+            'message' => $request->input('mensagem'),
+        ]);
+        $ref = $sale->id;
+
+        if($tipo == EnumTipoPagamento::DEPOSIT) {
+            return view('sales.store', [
+                'tipo' => $tipo
+            ]);
+        }
 
         $pagseguro = PagSeguro::setReference($ref)
             ->setSenderInfo([
@@ -116,6 +133,7 @@ class SaleController extends Controller
 
         return view('sales.store', [
             'paymentLink' => $pagseguro->paymentLink,
+            'tipo' => $tipo,
         ]);
     }
 

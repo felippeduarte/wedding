@@ -5,6 +5,7 @@
         <img src="/img/products/{{ $product->image }}">
         <label>{{ $product->name }}</label>
         <span>{{ $product->description }}</span>
+        <span>{{ $product->price }}</span>
         <a href="/presentes/" class="btn btn-default"><i class="fa fa-arrow-left"></i> Voltar</a>
     </div>
     <div id="target" class="col-xs-12 content"></div>
@@ -30,7 +31,7 @@ $(document).ready(function() {
             html += '<a href="/presentes/create?id={{ $product->id }}&tipo={{\App\Enums\EnumTipoPagamento::BOLETO}}&sessionId='+sessionId+'&hash='+senderHash+'">Boleto: <img class="img-responsive" src="https://stc.pagseguro.uol.com.br/'+img_boleto+'"/></a><br/>';
             html += '<a href="/presentes/create?id={{ $product->id }}&tipo={{\App\Enums\EnumTipoPagamento::CREDIT_CARD}}&sessionId='+sessionId+'&hash='+senderHash+'">Cartão de Crédito: <img class="img-responsive" src="https://stc.pagseguro.uol.com.br/'+img_visa+'"/>'+
                     '<img class="img-responsive" src="https://stc.pagseguro.uol.com.br/'+img_mastercard+'"/></a><br/>';
-            html += '<a href="/presentes/create?id={{ $product->id }}&tipo={{\App\Enums\EnumTipoPagamento::DEPOSIT}}&sessionId='+sessionId+'&hash='+senderHash+'">Depósito Online: <img class="img-responsive" src="https://stc.pagseguro.uol.com.br/'+img_deposito+'"/></a><br/>';
+            html += '<a href="/presentes/create?id={{ $product->id }}&tipo={{\App\Enums\EnumTipoPagamento::DEPOSIT}}">Transferência Bancária: <img class="img-responsive" src="https://stc.pagseguro.uol.com.br/'+img_deposito+'"/></a><br/>';
             $('#target').html(html);
         },
         error: function(response) {

@@ -5,6 +5,7 @@
         <img src="/img/products/{{ $product->image }}">
         <label>{{ $product->name }}</label>
         <span>{{ $product->description }}</span>
+        <span>{{ $product->price }}</span>
     </div>
     <div class="col-xs-12 content">
         <form method="POST" action="/presentes">
@@ -17,6 +18,7 @@
                 <label for="nome">Nome</label>
                 <input type="text" class="form-control" name="nome" id="nome" placeholder="Nome">
             </div>
+            @if($tipo != \App\Enums\EnumTipoPagamento::DEPOSIT)
             <div class="form-group">
                 <label for="cpf">CPF</label>
                 <input type="text" class="form-control" name="cpf" id="cpf" placeholder="000.000.000-00">
@@ -29,6 +31,7 @@
                 <label for="email">E-mail</label>
                 <input type="email" class="form-control" name="email" id="email" placeholder="email@email.com">
             </div>
+            @endif
             <div class="form-group">
                 <label for="mensagem">Mensagem</label>
                 <textarea class="form-control" name="mensagem" id="mensagem" placeholder="Deixe aqui uma mensagem para os noivos" rows="3">
@@ -110,7 +113,7 @@
             @if($tipo == \App\Enums\EnumTipoPagamento::DEPOSIT)
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="btn btn-success">Confirmar e Gerar Boleto</button>
+                    <button type="submit" class="btn btn-success">Confirmar</button>
                 </div>
             </div>
             @endif
