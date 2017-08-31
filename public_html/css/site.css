@@ -233,3 +233,24 @@ span.lp {
 #wrap .navbar .navbar-brand img {
     display: inline;
 }
+
+#wrap .navbar-nav>li {
+    font-family: "Simple_Cream";
+    font-weight: bolder;
+    font-size: 1.4em;
+}
+
+@media (min-width: 768px){
+    #wrap .navbar-nav {
+        margin: 0 auto;
+        display: table;
+        table-layout: auto;
+        float: none;
+        width: 100%;
+    }
+    #wrap .navbar-nav>li {
+        display: table-cell;
+        float: none;
+        text-align: center;
+    }
+}
