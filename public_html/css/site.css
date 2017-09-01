@@ -240,6 +240,10 @@ span.lp {
     font-size: 1.4em;
 }
 
+.confirmacaoTopo {
+    margin-bottom: 25px;
+}
+
 @media (min-width: 768px){
     .navbar-nav {
         margin: 0 auto;

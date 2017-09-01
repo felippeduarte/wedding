@@ -37,9 +37,9 @@ function confirmarPresenca() {
     itemsRef.push(item);
 
     if(confirma == 'nao') {
-        form.html("<h3>Sua ausência foi confirmada com sucesso :(</h3>");
+        form.parent().html("<h3>Sua ausência foi confirmada com sucesso :(</h3>");
     } else {
-        form.html("<h3>Obrigado por confirmar sua presença!</h3>");
+        form.parent().html("<h3>Obrigado por confirmar sua presença!</h3>");
     }
 }
 
