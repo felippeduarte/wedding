@@ -4,3 +4,12 @@ RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule . index.html [L]
+
+<FilesMatch "\.(js|css)$">
+	Header set Cache-Control "max-age=3600, public"
+</FilesMatch>
+
+<IfModule mod_headers.c>
+    Header set Cache-Control "private, no-cache, no-store, proxy-revalidate, no-transform"
+    Header set Pragma "no-cache"
+</IfModule>
