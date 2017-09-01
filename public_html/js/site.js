@@ -12,6 +12,37 @@ function countdownTimer () {
     $('#presente_segundos').html(diff.seconds);
 }
 
+function confirmarPresenca() {
+    var form = $('#rsvp');
+
+    var inputNome = form.find('[name="nome"]').first();
+    var nome = inputNome.val();
+
+    if(nome == '' || nome.length < 3) {
+        inputNome.parent().removeClass('has-success');
+        inputNome.parent().addClass('has-error');
+        inputNome.siblings('span').html('O campo nome deve ser preenchido corretamente com o nome completo.');
+        return false;
+    } else {
+        inputNome.parent().removeClass('has-error');
+        inputNome.parent().addClass('has-success');
+    }
+
+    var confirma = form.find('[name="confirma"]:checked').first().val();
+    var adultos = form.find('[name="adultos"]').first().val();
+    var mensagem = form.find('[name="mensagem"]').first().val();
+    
+    const itemsRef = firebase.database().ref('rsvp');
+    const item = {nome: nome, confirma: confirma, adultos: adultos, mensagem: mensagem, hora: moment().format('DD/MM/YYYY HH:mm:ss')};
+    itemsRef.push(item);
+
+    if(confirma == 'nao') {
+        form.html("<h3>Sua ausência foi confirmada com sucesso :(</h3>");
+    } else {
+        form.html("<h3>Obrigado por confirmar sua presença!</h3>");
+    }
+}
+
 function savePadrinhos(opcao, padrinho) {
     const itemsRef = firebase.database().ref('padrinhos_' + opcao);
     const item = {padrinho: padrinho, hora: moment().format('DD/MM/YYYY HH:mm:ss')};
